@@ -14,7 +14,6 @@ export interface Event {
   title: string
   description?: string
   type: EventType
-  date: string
   duration: number // in minutes
   location?: string
   isOnline: boolean
