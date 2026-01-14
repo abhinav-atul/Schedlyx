@@ -137,13 +137,13 @@ export const db = {
     return await query
   },
 
-  // Helper for public events page
+// Helper for public events page
   getPublicEvents: async () => {
     return await supabase
       .from('events')
       .select('*')
       .eq('status', 'active')
-      .order('date', { ascending: true })
+      .order('created_at', { ascending: false })
   },
 
   getEvent: async (id: string) => {
