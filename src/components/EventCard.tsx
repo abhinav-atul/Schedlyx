@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom'
 import {
-  CalendarDaysIcon,
   ClockIcon,
   MapPinIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline'
 import type { Event } from '../types'
-import { formatDate, getAvailableDates } from '../lib/utils'
 
 interface EventCardProps {
   event: Event
@@ -15,10 +13,6 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, showActions = true, className = '' }: EventCardProps) {
-  
-  // 1. Calculate the next actual available date using your utility function
-  const nextDates = getAvailableDates(30, false, event.availableDays)
-  const nextAvailableDate = nextDates.length > 0 ? nextDates[0] : null
   
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -56,11 +50,6 @@ export function EventCard({ event, showActions = true, className = '' }: EventCa
     }
   }
 
-  // Calculate availability percentage (Mock logic for now)
-  const availabilityPercentage = event.maxAttendees 
-    ? 75 
-    : 100
-
   return (
     <div className={`bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden ${className}`}>
       {/* Card Header */}
@@ -88,17 +77,8 @@ export function EventCard({ event, showActions = true, className = '' }: EventCa
           </p>
         )}
 
-        {/* Event Details */}
+        {/* Event Details - Removed fake availability "Next: ..." */}
         <div className="space-y-2 mb-4">
-          <div className="flex items-center text-sm text-gray-600">
-            <CalendarDaysIcon className="h-4 w-4 mr-2 text-primary-600" />
-            <span>
-              {nextAvailableDate 
-                ? `Next: ${formatDate(nextAvailableDate)}` 
-                : 'Check availability'}
-            </span>
-          </div>
-          
           <div className="flex items-center text-sm text-gray-600">
             <ClockIcon className="h-4 w-4 mr-2 text-primary-600" />
             <span>{event.duration} minutes</span>
@@ -123,28 +103,6 @@ export function EventCard({ event, showActions = true, className = '' }: EventCa
             </div>
           )}
         </div>
-
-        {/* Availability Bar (Optional Visual) */}
-        {event.maxAttendees && (
-          <div className="mb-4">
-            <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
-              <span>Availability</span>
-              <span>High demand</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  availabilityPercentage > 80
-                    ? 'bg-red-500'
-                    : availabilityPercentage > 50
-                    ? 'bg-yellow-500'
-                    : 'bg-green-500'
-                }`}
-                style={{ width: `${availabilityPercentage}%` }}
-              />
-            </div>
-          </div>
-        )}
 
         {/* Features Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
